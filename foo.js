@@ -19,6 +19,8 @@ console.log("hello world");
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"/* ... more days ... */];
 
 const tableBody = document.getElementById("table-body");
+let availDict = {};
+const saveButton = document.getElementById("saveButton");
 
 timeSlots.forEach(timeSlot => {
 const row = document.createElement("tr");
@@ -26,9 +28,22 @@ const timeSlotCell = document.createElement("td");
 timeSlotCell.textContent = timeSlot;
 row.appendChild(timeSlotCell);
 
-days.forEach(() => {
+days.forEach(day => {
   const cell = document.createElement("td");
   cell.classList.add("availability-cell");
+  const cellIdentifier = timeSlot + " " + day;
+  saveButton.addEventListener("click", () => {
+    if(cell.classList.contains("selected")){
+      availDict[cellIdentifier] = 1;
+    }
+    else{
+      availDict[cellIdentifier] = 0;
+    }
+
+    console.log(availDict);
+    
+  });
+  availDict[cellIdentifier] = 0;
   row.appendChild(cell);
 });
 
