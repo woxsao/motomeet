@@ -4,7 +4,8 @@ import json
 import websockets
 import pygsheets
 import pandas as pd
-
+import os
+import signal
 
 async def handler(websocket):
     gc = pygsheets.authorize(service_file = "./creds.json")
@@ -34,8 +35,13 @@ async def handler(websocket):
             teamSheet = sh.worksheet_by_title(subteam)
             teamSheet.append_table(values = available)
 async def main():
-    async with websockets.serve(handler, "", 8001):
-        await asyncio.Future()  # run forever
+    loop = asyncio.get_running_loop()
+    stop = loop.create_future()
+    loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
+
+    port = int(os.environ.get("PORT", "8001"))
+    async with websockets.serve(handler, "", port):
+        await stop
 
 
 if __name__ == "__main__":
