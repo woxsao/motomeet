@@ -30,9 +30,15 @@
   display: flex;
 }
 
-
+.entry{
+  flex-direction: row;
+}
 .name-entry {
   flex: 0;
   padding-top: 20%;
   padding-left: 20%;
+}
+.subteam-entry{
+  padding-top: 5%;
+  padding-left:20%;
 }

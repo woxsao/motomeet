@@ -24,12 +24,26 @@
         <!-- Content will be generated here using JavaScript -->
       </tbody>
     </table>
-    <div class="name-entry">
-      <label for="name">Enter your name: </label>
-      <input type="text" id="name" placeholder="Your name">
+    <div class = "entry">
+      <div class="name-entry">
+        <label for="name">Enter your name: </label>
+        <input type="text" id="name" placeholder="Your name">
+      </div>
+      <!-- Checkboxes for "check all that apply" -->
+      <div class = "subteam-entry">
+        <fieldset>
+            <legend>Check all that apply:</legend>
+            <label><input type="checkbox" value="MechE">MechE</label>
+            <label><input type="checkbox" value="EE">EE</label>
+            <label><input type="checkbox" value="Software">Software</label>
+            <label><input type="checkbox" value="Business">Business</label>
+            <label><input type="checkbox" value="Aero">Aero</label>
+        </fieldset>
+        <button id="saveButton">Save</button>
+      </div>
     </div>
   </div>
-  <button id="saveButton">Save</button>
+  
   <script src="foo.js"></script>
 </body>
 </html>

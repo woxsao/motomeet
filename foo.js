@@ -21,6 +21,8 @@ const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
 const tableBody = document.getElementById("table-body");
 let availDict = {};
 const saveButton = document.getElementById("saveButton");
+const subteamEntry = document.querySelector('.subteam-entry');
+const checkboxes = subteamEntry.querySelectorAll('input[type="checkbox"]');
 
 timeSlots.forEach(timeSlot => {
 const row = document.createElement("tr");
@@ -80,8 +82,13 @@ nameInput.addEventListener("input", event => {
 });
 
 saveButton.addEventListener("click", event => {
-  let pyInput = {"name": currentName, "availability": availDict}
-  console.log(pyInput);
+  
+  const selectedSubteams = Array.from(checkboxes)
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => checkbox.value);
+  console.log(selectedSubteams);
+  let pyInput = {"name": currentName, "availability": availDict, "subteams": selectedSubteams};
   const websocket = new WebSocket("ws://localhost:8001/");
+  console.log(pyInput);
   websocket.onopen = () =>websocket.send(JSON.stringify(pyInput));
 });
