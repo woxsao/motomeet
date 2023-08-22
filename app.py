@@ -25,10 +25,11 @@ async def handler(websocket):
             "time": times,
             "available": available
         })
+        available.insert(0,names[0])
         print(df)
         sh = gc.open('motomeet')
         av = sh[0]
-        av.set_dataframe(df,(1,1))
+        av.append_table(values = available,)
 async def main():
     async with websockets.serve(handler, "", 8001):
         await asyncio.Future()  # run forever
