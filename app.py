@@ -1,12 +1,34 @@
 import asyncio
 import itertools
 import json
-
-pass
 import websockets
+import pygsheets
+import pandas as pd
+
+
 async def handler(websocket):
+    gc = pygsheets.authorize(service_file = "/Users/MonicaChan/Desktop/FSAE/motomeet/creds.json")
     async for message in websocket:
-        print(message)
+        d = dict(json.loads(message))
+        print(d)
+        # Extract the availability dictionary
+        availability_dict = d["availability"]
+
+        # Create lists to store data for each column
+        names = [d["name"]] * len(availability_dict)  # Repeat name for each availability entry
+        times = list(availability_dict.keys())
+        available = list(availability_dict.values())
+
+        # Create a DataFrame
+        df = pd.DataFrame({
+            "name": names,
+            "time": times,
+            "available": available
+        })
+        print(df)
+        sh = gc.open('motomeet')
+        av = sh[0]
+        av.set_dataframe(df,(1,1))
 async def main():
     async with websockets.serve(handler, "", 8001):
         await asyncio.Future()  # run forever

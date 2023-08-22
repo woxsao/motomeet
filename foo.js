@@ -39,8 +39,6 @@ days.forEach(day => {
     else{
       availDict[cellIdentifier] = 0;
     }
-
-    console.log(availDict);
     
   });
   availDict[cellIdentifier] = 0;
@@ -79,4 +77,11 @@ let currentName = "";
 
 nameInput.addEventListener("input", event => {
   currentName = event.target.value;
+});
+
+saveButton.addEventListener("click", event => {
+  let pyInput = {"name": currentName, "availability": availDict}
+  console.log(pyInput);
+  const websocket = new WebSocket("ws://localhost:8001/");
+  websocket.onopen = () =>websocket.send(JSON.stringify(pyInput));
 });
