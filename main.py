@@ -1,15 +1,20 @@
-import asyncio
-import itertools
 import json
-import websockets
 import pygsheets
 import pandas as pd
-import os
-import signal
+from flask import Flask, render_template
+from flask_sockets import Sockets
 
-async def handler(websocket):
+
+app = Flask(__name__)
+sockets = Sockets(app)
+
+@sockets.route("/chat")
+def chat_socket(ws):
     gc = pygsheets.authorize(service_file = "./creds.json")
-    async for message in websocket:
+    while not ws.closed:
+        message = ws.receive()
+        if message is None:  # message is "None" if the client has closed.
+            continue
         d = dict(json.loads(message))
         print(d)
         # Extract the availability dictionary
@@ -34,15 +39,11 @@ async def handler(websocket):
         for subteam in subteams:
             teamSheet = sh.worksheet_by_title(subteam)
             teamSheet.append_table(values = available)
-async def main():
-    loop = asyncio.get_running_loop()
-    stop = loop.create_future()
-    loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
 
-    port = int(os.environ.get("PORT", "8001"))
-    async with websockets.serve(handler, "", port):
-        await stop
-
+# [END gae_flex_websockets_app]
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    print("oops")
