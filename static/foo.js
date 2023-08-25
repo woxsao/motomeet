@@ -64,6 +64,7 @@ cell.addEventListener('mouseover', () => {
     toggleAvailability(cell);
   }
 });
+
 });
 
 document.addEventListener('mouseup', () => {
@@ -88,7 +89,14 @@ saveButton.addEventListener("click", event => {
         .map(checkbox => checkbox.value);
   console.log(selectedSubteams);
   let pyInput = {"name": currentName, "availability": availDict, "subteams": selectedSubteams};
-  const websocket = new WebSocket("ws://localhost:8001/");
+  
+  var scheme = window.location.protocol == "https:" ? 'wss://' : 'ws://';
+  var webSocketUri =  scheme
+                      + window.location.hostname
+                      + (location.port ? ':'+location.port: '')
+                      + '/foo';
+  const websocket = new WebSocket(webSocketUri);
+
   console.log(pyInput);
   websocket.onopen = () =>websocket.send(JSON.stringify(pyInput));
 });

@@ -8,12 +8,12 @@ from flask_sockets import Sockets
 app = Flask(__name__)
 sockets = Sockets(app)
 
-@sockets.route("/chat")
-def chat_socket(ws):
+@sockets.route("/foo")
+def handler(websocket):
     gc = pygsheets.authorize(service_file = "./creds.json")
-    while not ws.closed:
-        message = ws.receive()
-        if message is None:  # message is "None" if the client has closed.
+    while not websocket.closed:
+        message = websocket.receive()
+        if message == None:
             continue
         d = dict(json.loads(message))
         print(d)
@@ -40,10 +40,21 @@ def chat_socket(ws):
             teamSheet = sh.worksheet_by_title(subteam)
             teamSheet.append_table(values = available)
 
-# [END gae_flex_websockets_app]
 @app.route("/")
 def index():
     return render_template("index.html")
+"""async def main():
+    async with websockets.serve(handler, "", 8080):
+        await asyncio.Future()  # run forever
 
+"""
 if __name__ == "__main__":
-    print("oops")
+    print(
+        """
+        This can not be run directly because the Flask development server does not
+        support web sockets. Instead, use gunicorn:
+
+        gunicorn -b 127.0.0.1:8080 -k flask_sockets.worker main:app
+
+        """
+            )

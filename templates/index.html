@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
   <title>Availability Table</title>
 </head>
 <body>
@@ -38,12 +38,13 @@
             <label><input type="checkbox" value="Software">Software</label>
             <label><input type="checkbox" value="Business">Business</label>
             <label><input type="checkbox" value="Aero">Aero</label>
+            
         </fieldset>
         <button id="saveButton">Save</button>
       </div>
     </div>
   </div>
   
-  <script src="foo.js"></script>
+  <script src="{{ url_for('static', filename='foo.js')}}"></script>
 </body>
 </html>
