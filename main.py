@@ -23,22 +23,23 @@ def handler(websocket):
         print(subteams)
         # Create lists to store data for each column
         names = [d["name"]] * len(availability_dict)  # Repeat name for each availability entry
-        times = list(availability_dict.keys())
         available = list(availability_dict.values())
 
-        # Create a DataFrame
-        df = pd.DataFrame({
-            "name": names,
-            "time": times,
-            "available": available
-        })
         available.insert(0,names[0])
-        print(df)
         sh = gc.open('motomeet')
         subteams.append("Teamwide")
         for subteam in subteams:
             teamSheet = sh.worksheet_by_title(subteam)
-            teamSheet.append_table(values = available)
+            cur_names = teamSheet.get_col(1)
+            dup = False
+            for ix, n in enumerate(cur_names):
+                if n == names[0]: #duplicate entry found
+                    teamSheet.update_row(index = ix+1, values = available)
+                    dup = True
+                    print("duplicate found!")
+            if not dup:
+                teamSheet.append_table(values = available)
+                print("success added")
 
 @app.route("/")
 def index():

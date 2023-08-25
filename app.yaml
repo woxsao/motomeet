@@ -34,3 +34,6 @@ manual_scaling:
 
 # network:
 #   session_affinity: true
+handlers:
+- url: /static
+  static_dir: static

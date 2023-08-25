@@ -64,7 +64,6 @@ cell.addEventListener('mouseover', () => {
     toggleAvailability(cell);
   }
 });
-
 });
 
 document.addEventListener('mouseup', () => {

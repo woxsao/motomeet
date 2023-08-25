@@ -42,3 +42,7 @@
   padding-top: 5%;
   padding-left:20%;
 }
+.subteam-entry label {
+  display: block;
+  margin-bottom: 5px;
+}
